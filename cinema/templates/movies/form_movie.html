@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+{% block title %}           Watch {{ movie.name }}          {% endblock %}
+
+
+
+{% block content %}
+
+<div style="width:350px" class=" py-5 container">
+
+    {% if movie %}
+
+<form  action="{% url 'UpMovie' %}" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" name="movie_id" value="{{movie.id}}" />
+
+    {% else %}
+
+<form  action="{% url 'AddMovie' %}" method="post" enctype="multipart/form-data">
+
+    {% endif %}
+
+    {% csrf_token %}
+
+  <div class="form-group">
+    <label for="name">Movie Name</label>
+
+    <input name="name"  type="text" class="form-control"
+    id="name" aria-describedby="emailHelp" {% if movie %}
+    value="{{movie.name}}" {% else %} placeholder="Enter Movie Name" {% endif %}>
+  </div>
+
+   <div class="form-group">
+    <label  for="exampleFormControlFile1">Movie Poster</label>
+    <input name="poster" type="file" class="form-control-file" id="exampleFormControlFile1">
+  </div>
+
+  <div class="form-group">
+    <label for="year">Movie Year</label>
+
+    <input name="year" type="date" class="form-control"
+    id="year" {% if movie %} value="{{movie.year}} "
+     {% else %} placeholder="  Enter Movie Year " {% endif %}>
+  </div>
+
+
+
+   <div class="form-group">
+    <label for="trailer">Movie Trailer</label>
+    <input name="trailer" type="file" class="form-control-file" id="trailer">
+  </div>
+
+    {% for category in categories %}
+
+    <div class="form-check form-check-inline">
+  <input name="category" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="{{category.id}}">
+  <label class="form-check-label" for="inlineCheckbox1">{{category.name}}</label>
+</div>
+{% endfor %}
+
+
+
+  <button type="submit" class="btn btn-primary"> Save </button>
+</form>
+</div>
+{% endblock %}

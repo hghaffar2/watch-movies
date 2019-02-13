@@ -1,0 +1,68 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+{% block title %}           Watch {{ movie.name }}          {% endblock %}
+
+
+
+{% block content %}
+
+<div class="container d-flex justify-content-around mt-1" > <br />
+<div class="col-md-8">
+          <!--<img class="img-fluid" src="http://placehold.it/750x500" alt="">-->
+<video class="img-fluid" width="750" height="500" controls>
+  <source src="{{movie.trailer.url}}">
+  <source src="{{movie.trailer.url}}">
+</video>
+        </div>
+
+        <div class="col-md-4">
+          <h3 class="my-3"> {{ movie.name}} {{ movie.date}}</h3>
+          <p>Categories</p>
+
+           <div><form method="post" action="{% url 'LikeMovie' %}" >
+                {% csrf_token %}
+               <input type="hidden" name="movie_id" value="{{movie.id}}" />
+               <input class="like btn btn-success" type="submit" value="Like" />
+           </form></div>
+
+            <br />
+          <h3 class="my-3"> Cast </h3>
+          <ul>
+            <li>Lorem Ipsum</li>
+            <li>Dolor Sit Amet</li>
+            <li>Consectetur</li>
+            <li>Adipiscing Elit</li>
+          </ul>
+
+            <br /><h5> Movie Likes : {{movie.likes}}</h5>
+        </div>
+</div>
+
+<br />
+          <div class="row">
+
+   <div class=" col-lg-6 col-md-6">
+       <form method="post" action=" {% url 'Comment' %}">
+           {% csrf_token %}
+
+           <input type="hidden" name="movie_id" value="{{movie.id}}" />
+
+
+           <textarea class="form-control" name="comment" placeholder=" Write a comment..."></textarea>
+
+           <input class="btn btn-primary" type="submit" value="Comment" />
+
+       </form>
+   </div>
+
+    <div class=" col-lg-6 col-md-6">
+
+        {% for movie in comments %}
+<div style="background-color:#E6E2EB; height:50px">{{movie.comment}}</div>
+
+        {% endfor %}
+
+    </div>
+          </div>
+{% endblock %}
